@@ -4,6 +4,8 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 
 
+
+
 class LoginSerializer(serializers.Serializer):
     email=serializers.EmailField()
     password=serializers.CharField()
@@ -23,3 +25,6 @@ class RegisterSerializer(serializers.ModelSerializer):
     def create(self,validated_data):
         user=User.objects.create_user(**validated_data)
         return user
+    
+
+

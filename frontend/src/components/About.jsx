@@ -2,7 +2,7 @@ const Home=()=>{
 
     return(
 
-        <div>This is the about page</div>
+        <div>This page was made for practice purposes, for Dimitri to learn how to use React with Django to create a web aplication</div>
     )
 }
 

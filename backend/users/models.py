@@ -10,6 +10,8 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 
 
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self,email,password=None, **extra_fields):
         if not email:
@@ -33,3 +35,29 @@ class CustomUser(AbstractUser):
 
     USERNAME_FIELD='email'
     REQUIRED_FIELDS=[]
+
+
+@receiver(reset_password_token_created)
+def password_reset_token_created(reset_password_token,*args, **kwargs):
+    sitelink="http://localhost:5173/"
+    token="{}".format(reset_password_token.key)
+    full_link=f'{sitelink}password-reset/{token}'
+    print(full_link)
+    context={'full_link':full_link, 'email_address':reset_password_token.user.email}
+
+    html_message=render_to_string("email.html", context=context)
+    plain_message=strip_tags(html_message)
+
+    msg=EmailMultiAlternatives(
+
+        subject="Request for resetting password for {title}".format(title=reset_password_token.user.email),
+        body=plain_message,
+        from_email="dimitrig110911@gmail.com",
+        to=[reset_password_token.user.email],
+
+    )
+
+    msg.attach_alternative(
+        html_message,"text/html")
+    
+    msg.send()

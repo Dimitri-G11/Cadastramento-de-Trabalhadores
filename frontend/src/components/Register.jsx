@@ -7,10 +7,25 @@ import {Link} from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 import AxiosInstance from './axiosinstances';
 import { useNavigate } from 'react-router-dom';
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 const Register=()=>{
     const navigate=useNavigate()
-    const {handleSubmit,control}=useForm()
+    const schema=yup.object({
+        email:yup.string().email("Email expected").required("Email field is required"),
+        password:yup.string().required()
+                    .min(8, "Must have at least 8 characters")
+                    .matches(/[A-Z]/,"Password must contain at least one Capital letter")
+                    .matches(/[a-z]/,"Password must contain at least one Lowercase letter")
+                    .matches(/[0-9]/,"Password must contain at least one number")    
+                    .matches(/[§=+{}~~;.,><;:!@#$%¨&*()_-¬¨£]/,"Password must contain at least one especial character"),
+        password2:yup.string().required("Password confirmation is a required field")
+                      .oneOf([yup.ref("password"),null],"Passwords must match"),
+                    
+    })
+
+    const {handleSubmit,control}=useForm({resolver:yupResolver(schema)})
 
     const submission=(data)=>{
         AxiosInstance.post('register/',
@@ -36,7 +51,7 @@ const Register=()=>{
                     <Box className={"itemboxr"}>
                             <TextFieldEmail 
                                 label="Email"
-                                name="email"
+                                name={"email"}
                                 control={control}
                             />
 
@@ -56,8 +71,8 @@ const Register=()=>{
                     <Box className={"itemboxr"}> 
                         <TextFieldPassword
                         
-                            label={" Confirm Password"}
-                            name="password2"
+                            label={"Confirm Password"}
+                            name={"password2"}
                             control={control}
                         />
 

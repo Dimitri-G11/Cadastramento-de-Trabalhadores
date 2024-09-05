@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'corsheaders',
     'django_rest_passwordreset',
+    'CrudForRegisterdEmployees',
 ]
 
 MIDDLEWARE = [
@@ -90,16 +91,17 @@ CORS_ALLOWED_ORIGINS = [
 AUTH_USER_MODEL='users.CustomUser'
 
 AUTHENTICATION_BACKENDS=[
-    'users.auth_backend.EmailAuthBackend'
+    #'users.auth_backend.EmailAuthBackend'
+    'django.contrib.auth.backends.ModelBackend'
 ]
 
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST ='smtp.gmail.com'
 EMAIL_PORT=587
-EMAIL_USE_TLC=True
+EMAIL_USE_TLS=True
 DEFAULT_FROM_EMAIL='My App'
 EMAIL_HOST_USER=os.environ.get("AA_EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORDS=os.environ.get("AA_EMAIL_HOST_PASSWORDS")
+EMAIL_HOST_PASSWORD=os.environ.get("AA_EMAIL_HOST_PASSWORDS")
 
 
 # Database

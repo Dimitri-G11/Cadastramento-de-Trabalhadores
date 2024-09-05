@@ -33,7 +33,6 @@ AxiosInstance.interceptors.request.use(
         (error)=>{
             if(error.response && error.response.status===401){
                 localStorage.removeItem('Token')
-                window.location.href='/'
             }
         }
 
